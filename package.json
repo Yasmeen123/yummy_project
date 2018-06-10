@@ -1,0 +1,25 @@
+{
+  "name": "appserver",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "geo-nearby": "^2.0.1",
+    "jade": "~1.11.0",
+    "mongoose": "^5.0.12",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5"
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "yasmeen",
+  "license": "ISC",
+  "description": ""
+}
