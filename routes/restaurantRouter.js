@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Restaurants = require('../models/restaurant');
 var Photos = require('../models/photo');
+var authenticate = require('../authenticate');
 
 var app = express();
 app.use(bodyParser.json());
@@ -92,7 +93,7 @@ RestaurantRouter.route('/')
     }
 }) 
 
-.post((req,res,next) =>{
+.post(authenticate.verifyUser , (req,res,next) =>{
      Restaurants.create(req.body)
      .then((restaurant) => {
          res.statusCode = 200;

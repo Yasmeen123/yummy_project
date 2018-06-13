@@ -3,6 +3,7 @@ var UserRouter = express.Router();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Users = require('../models/user');
+var authenticate = require('../authenticate');
 
 var app = express();
 app.use(bodyParser.json());
@@ -40,7 +41,7 @@ UserRouter.route('/:user_id')
     .catch((err) => next(err));
 })
 
-.post((req,res,next) =>{
+.post(authenticate.verifyUser , (req,res,next) =>{
     Users.create(req.body)
     .then((user) => {
         console.log('user Created ', user);

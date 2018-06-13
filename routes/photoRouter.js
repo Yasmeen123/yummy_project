@@ -3,6 +3,7 @@ var PhotoRouter = express.Router();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Photos = require('../models/photo');
+var authenticate = require('../authenticate');
 
 var app = express();
 app.use(bodyParser.json());
@@ -28,7 +29,7 @@ PhotoRouter.route('/')
         .catch((err) => next(err));
     }
 })
-.post((req,res,next) =>{
+.post(authenticate.verifyUser , (req,res,next) =>{
     Photos.create(req.body)
     .then((restaurant) => {
         res.statusCode = 200;

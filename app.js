@@ -4,6 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var authenticate = require('./authenticate');
+var config = require('./config');
+
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
 
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
@@ -22,7 +28,7 @@ var restaurantRouter = require('./routes/restaurantRouter');
 
 var app = express();
 
-const url = 'mongodb://localhost:27017/Application';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 connect.then((db) => {
    console.log('connected correctly to the server');
@@ -40,8 +46,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
+
 app.use('/', index);
 app.use('/users', users);
+
 app.use('/user', userRouter);
 app.use('/reviews', reviewRouter);
 app.use('/photos', photoRouter);

@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var url = require('url');
 var mongoose = require('mongoose');
 var Reviews = require('../models/review');
+var authenticate = require('../authenticate');
 
 var app = express();
 app.use(bodyParser.json());
@@ -30,7 +31,7 @@ reviewRouter.route('/')
     }
 })
 
-.post((req,res,next) =>{
+.post(authenticate.verifyUser , (req,res,next) =>{
     Reviews.create(req.body)
     .then((review) => {
         console.log('Review Created ', review);
