@@ -8,9 +8,18 @@ const UserSchema = new schema({
         required : false , 
         unique : true
     },
+    facebookId: String,
     name : {
         type : String ,
         required : false ,
+    },
+    firstname : {
+        type : String ,
+        required : false 
+    },
+    lastname : {
+        type : String ,
+        required : false 
     },
     review_count : {
         type : Number ,
