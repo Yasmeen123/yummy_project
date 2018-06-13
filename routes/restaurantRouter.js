@@ -5,13 +5,15 @@ var mongoose = require('mongoose');
 var Restaurants = require('../models/restaurant');
 var Photos = require('../models/photo');
 var authenticate = require('../authenticate');
+var cors = require('../routes/cors');
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 RestaurantRouter.route('/')
-.get((req,res,next) => {
+.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
+.get(cors.cors , (req,res,next) => {
     if(req.query.business_id != null){
         Restaurants.find({'business_id' : req.query.business_id})
         .then((restaurant) => {
@@ -93,7 +95,7 @@ RestaurantRouter.route('/')
     }
 }) 
 
-.post(authenticate.verifyUser , (req,res,next) =>{
+.post(cors.corsWithOptions , authenticate.verifyUser , (req,res,next) =>{
      Restaurants.create(req.body)
      .then((restaurant) => {
          res.statusCode = 200;
