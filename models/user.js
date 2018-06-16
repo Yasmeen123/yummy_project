@@ -6,7 +6,6 @@ const UserSchema = new schema({
     user_id : {
         type : String ,
         required : false , 
-        unique : true
     },
     facebookId: String,
     name : {
