@@ -4,15 +4,15 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Users = require('../models/user');
 var authenticate = require('../authenticate');
-var cors = require('../routes/cors');
+//var cors = require('../routes/cors');
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 UserRouter.route('/')
-.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(cors.cors , (req,res,next) => {
+.options(/*cors.corsWithOptions ,*/(req,res) => {res.sendStatus(200)})
+.get(/*cors.cors ,*/ (req,res,next) => {
     Users.find({})
     .then((users) => {
         res.statusCode = 200;
@@ -21,7 +21,7 @@ UserRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(cors.corsWithOptions , (req,res,next) =>{
+.post(/*cors.corsWithOptions ,*/ (req,res,next) =>{
     Users.create(req.body)
     .then((user) => {
         console.log('user Created ', user);
@@ -33,8 +33,8 @@ UserRouter.route('/')
 })
 
 UserRouter.route('/:user_id')
-.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(cors.cors , (req,res,next) => {
+.options(/*cors.corsWithOptions ,*/(req,res) => {res.sendStatus(200)})
+.get(/*cors.cors ,*/ (req,res,next) => {
     Users.find({'user_id' : req.params.user_id})
     .then((user) => {
      res.statusCode = 200;
@@ -44,7 +44,7 @@ UserRouter.route('/:user_id')
     .catch((err) => next(err));
 })
 
-.post(cors.corsWithOptions ,  authenticate.verifyUser , (req,res,next) =>{
+.post(/*cors.corsWithOptions ,*/  authenticate.verifyUser , (req,res,next) =>{
     Users.create(req.body)
     .then((user) => {
         console.log('user Created ', user);

@@ -5,15 +5,15 @@ var mongoose = require('mongoose');
 var Restaurants = require('../models/restaurant');
 var Photos = require('../models/photo');
 var authenticate = require('../authenticate');
-var cors = require('../routes/cors');
+//var cors = require('../routes/cors');
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 RestaurantRouter.route('/')
-.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(cors.cors , (req,res,next) => {
+.options(/*cors.corsWithOptions ,*/(req,res) => {res.sendStatus(200)})
+.get(/*cors.cors ,*/ (req,res,next) => {
     if(req.query.business_id != null){
         Restaurants.find({'business_id' : req.query.business_id})
         .then((restaurant) => {
@@ -79,14 +79,24 @@ RestaurantRouter.route('/')
         .catch((err) => next(err));
     }
     else{
-        Restaurants.aggregate([{
-            $lookup: {
-                from: "photos", //add from it 
-                localField: "business_id",
-                foreignField: "business_id",
-                as: "photos"
-            }
-        }])
+        Restaurants.aggregate([
+            {
+                $lookup: {
+                    from: "photos", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "photos"
+                }
+            },
+            {
+                $lookup: {
+                    from: "menus", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "menus"
+                }
+            },
+        ])
         .then((restaurants) => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
@@ -95,7 +105,7 @@ RestaurantRouter.route('/')
     }
 }) 
 
-.post(cors.corsWithOptions , authenticate.verifyUser , (req,res,next) =>{
+.post(/*cors.corsWithOptions ,*/ authenticate.verifyUser , (req,res,next) =>{
      Restaurants.create(req.body)
      .then((restaurant) => {
          res.statusCode = 200;

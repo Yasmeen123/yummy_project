@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var authenticate = require('./authenticate');
 var config = require('./config');
+var cors = require('cors');
 
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
@@ -25,6 +26,7 @@ var reviewRouter = require('./routes/reviewRouter');
 var photoRouter = require('./routes/photoRouter');
 var userRouter = require('./routes/userRouter');
 var restaurantRouter = require('./routes/restaurantRouter');
+var menuRouter = require('./routes/menuRouter');
 
 var app = express();
 
@@ -45,6 +47,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
 
 app.use(passport.initialize());
 
@@ -54,6 +57,7 @@ app.use('/users', users);
 app.use('/user', userRouter);
 app.use('/reviews', reviewRouter);
 app.use('/photos', photoRouter);
+app.use('/menus', menuRouter);
 app.use('/restaurants', restaurantRouter);
 
 
