@@ -15,9 +15,7 @@ const  PhotoSchema = new schema ({
     photo_id : {
         type : String ,
         required : true
-    },
-},{
-        timestamps : true
+    }
     }); 
     
     var Photos = mongoose.model('Photo',PhotoSchema);

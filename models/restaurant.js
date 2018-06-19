@@ -56,9 +56,7 @@ var RestaurantSchema = new schema ({
     hours : {
         type : String ,
         required : false
-    },
-},{
-    timestamps : true
+    }
 });
 
 RestaurantSchema.index('2dsphere')
