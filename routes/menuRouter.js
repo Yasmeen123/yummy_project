@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Menus = require('../models/menu');
 var Restaurants = require('../models/restaurant');
 var authenticate = require('../authenticate');
-var cors = require('../routes/cors');
+//var cors = require('../routes/cors');
 
 var _ = require('underscore');
 
@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 MenuRouter.route('/')
-.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(cors.cors , (req,res,next) => {
+//.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
+.get(/*cors.cors ,*/ (req,res,next) => {
     if(req.query.business_id != null){
         Menus.find({'business_id' : req.query.business_id})
         .then((menu) => {
@@ -223,7 +223,7 @@ MenuRouter.route('/')
         .catch((err) => next(err));
     }
 })
-.post(cors.corsWithOptions ,  authenticate.verifyUser , (req,res,next) =>{
+.post(/*cors.corsWithOptions , */ authenticate.verifyUser , (req,res,next) =>{
     Menus.create(req.body)
     .then((menu) => {
         res.statusCode = 200;

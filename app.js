@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var authenticate = require('./authenticate');
 var config = require('./config');
-
+var cors = require('cors');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 
@@ -49,7 +49,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(passport.initialize());
-
+app.use(cors());
 app.use('/', index);
 app.use('/users', users);
 

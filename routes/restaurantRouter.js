@@ -5,29 +5,66 @@ var mongoose = require('mongoose');
 var Restaurants = require('../models/restaurant');
 var Photos = require('../models/photo');
 var authenticate = require('../authenticate');
-var cors = require('../routes/cors');
+//var cors = require('../routes/cors');
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 RestaurantRouter.route('/')
-.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(cors.cors , (req,res,next) => {
+//.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
+.get(/*cors.cors ,*/ (req,res,next) => {
     if(req.query.business_id != null){
-        Restaurants.find({'business_id' : req.query.business_id})
+        Restaurants.aggregate([
+            {
+                $lookup: {
+                    from: "photos", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "photos"
+                }
+            },
+            {
+                $lookup: {
+                    from: "menus", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "menu"
+                }
+            },
+            {
+                $lookup: {
+                    from: "reviews", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "reviews"
+                }
+            }
+
+        ])
         .then((restaurant) => {
+            var filtered =restaurant.filter(rest => rest.business_id == req.query.business_id);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json(restaurant);
+            res.json(filtered);
         }, (err) => next(err))
         .catch((err) => next(err));
     }else if (req.query.name != null){
-        Restaurants.find({'name' : req.query.name})
-          .then((restaurant) => {
-             res.statusCode = 200;
-             res.setHeader('Content-Type', 'application/json');
-             res.json(restaurant);
+        Restaurants.aggregate([
+            {
+                $lookup: {
+                    from: "photos", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "photos"
+                }
+            }
+        ])
+        .then((restaurant) => {
+            var filtered =restaurant.filter(rest => rest.name == req.query.name);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(filtered);
              }, (err) => next(err))
         .catch((err) => next(err));
     }else if (req.query.latitude && req.query.longitude != null) {
@@ -49,14 +86,6 @@ RestaurantRouter.route('/')
                     foreignField: "business_id",
                     as: "photos"
                 }
-            },
-            {
-                $lookup: {
-                    from: "menus", //add from it 
-                    localField: "business_id",
-                    foreignField: "business_id",
-                    as: "menus"
-                }
             }
         ])
        .then((restaurants) => {
@@ -66,18 +95,36 @@ RestaurantRouter.route('/')
         }, (err) => next(err))
         .catch((err) => next(err));
     }else if (req.query.stars != null){
-        Restaurants.find({'stars' : req.query.stars})
-        .then((populars) => {
+        Restaurants.aggregate([
+            {
+                $lookup: {
+                    from: "photos", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "photos"
+                }
+            }
+        ])
+        .then((restaurant) => {
+            var filtered =restaurant.filter(rest => rest.stars == req.query.stars);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json(populars);
+            res.json(filtered);
         }, (err) => next(err))
         .catch((err) => next(err));
     }
     else if(req.query.categories != null){
-       Restaurants.aggregate(
-           [{ $match : {'categories' : {$in :[req.query.categories,"$categories"]}}}]
-       )
+       Restaurants.aggregate([
+           { $match : {'categories' : {$in :[req.query.categories,"$categories"]}}},
+           {
+            $lookup: {
+                from: "photos", //add from it 
+                localField: "business_id",
+                foreignField: "business_id",
+                as: "photos"
+            }
+        }
+        ])
         .then((restaurant) => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
@@ -85,11 +132,21 @@ RestaurantRouter.route('/')
         }, (err) => next(err))
         .catch((err) => next(err));
     }else if (req.query.is_open != null) {
-        Restaurants.find({is_open : req.query.is_open})
-        .then((restaurants) => {
+        Restaurants.aggregate([
+            {
+                $lookup: {
+                    from: "photos", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "photos"
+                }
+            }
+        ])
+        .then((restaurant) => {
+            var filtered =restaurant.filter(rest => rest.is_open == req.query.is_open);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json(restaurants);
+            res.json(filtered);
         }, (err) => next(err))
         .catch((err) => next(err));
     }
@@ -102,14 +159,6 @@ RestaurantRouter.route('/')
                     foreignField: "business_id",
                     as: "photos"
                 }
-            },
-            {
-                $lookup: {
-                    from: "menus", //add from it 
-                    localField: "business_id",
-                    foreignField: "business_id",
-                    as: "menus"
-                }
             }
         ])
         .then((restaurants) => {
@@ -120,7 +169,7 @@ RestaurantRouter.route('/')
     }
 }) 
 
-.post(cors.corsWithOptions , authenticate.verifyUser , (req,res,next) =>{
+.post(/*cors.corsWithOptions ,*/ authenticate.verifyUser , (req,res,next) =>{
      Restaurants.create(req.body)
      .then((restaurant) => {
          res.statusCode = 200;

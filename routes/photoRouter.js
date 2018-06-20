@@ -4,15 +4,15 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var Photos = require('../models/photo');
 var authenticate = require('../authenticate');
-var cors = require('../routes/cors');
+//var cors = require('../routes/cors');
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 PhotoRouter.route('/')
-.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(cors.cors , (req,res,next) => {
+//.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
+.get(/*cors.cors ,*/ (req,res,next) => {
     if(req.query.business_id != null){
         Photos.find({'business_id' : req.query.business_id})
         .then((restaurant) => {
@@ -31,7 +31,7 @@ PhotoRouter.route('/')
         .catch((err) => next(err));
     }
 })
-.post(cors.corsWithOptions ,  authenticate.verifyUser , (req,res,next) =>{
+.post(/*cors.corsWithOptions , */ authenticate.verifyUser , (req,res,next) =>{
     Photos.create(req.body)
     .then((restaurant) => {
         res.statusCode = 200;
