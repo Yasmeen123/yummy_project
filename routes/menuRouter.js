@@ -44,7 +44,7 @@ MenuRouter.route('/')
                 }
             ])
         .then((menus) => {
-            var filtered =menus.filter(menu => menu.rating = req.query.rating);
+            var filtered =menus.filter(menu => menu.rating == req.query.rating);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
             res.json(filtered);
@@ -154,7 +154,7 @@ MenuRouter.route('/')
                 }
             ])
         .then((menus) => {
-            var filtered = menus.filter(menu => {return menu.price < 7}).filter(menu => {return menu.rating == req.query.rating});
+            var filtered = menus.filter(menu => {return menu.price < 7}).filter(menu1 => {return menu1.rating == req.query.rating});
             res.setHeader('Content-Type', 'application/json');
             res.json(filtered);
         }, (err) => next(err))
