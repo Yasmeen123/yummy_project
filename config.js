@@ -2,8 +2,8 @@ module.exports = {
     'secretKey': '12345-67890-09876-54321',
     'mongoUrl' : 'mongodb://localhost:27017/Application',
     'facebook': {
-        clientId: '214775915990201',
-        clientSecret: '47cdd9476207b09a803c37dd3e5691c2'
+        clientId: '2017810365135727',
+        clientSecret: '824f0cf4bcb1916487575d150c50af9f'
     }
 }
 
