@@ -18,6 +18,7 @@ var Restaurants = require('./models/restaurant');
 var Reviews = require('./models/review');
 var Users = require('./models/user');
 var Orders = require('./models/order');
+var Comments = require('./models/comment');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -27,6 +28,7 @@ var userRouter = require('./routes/userRouter');
 var restaurantRouter = require('./routes/restaurantRouter');
 var menuRouter = require('./routes/menuRouter');
 var orderRouter = require('./routes/orderRouter');
+var commentRouter = require('./routes/commentRouter');
 
 var app = express();
 
@@ -60,6 +62,7 @@ app.use('/photos', photoRouter);
 app.use('/menus', menuRouter);
 app.use('/restaurants', restaurantRouter);
 app.use('/orders',orderRouter);
+app.use('/comments',commentRouter);
 
 
 // catch 404 and forward to error handler
