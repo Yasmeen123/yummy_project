@@ -39,7 +39,7 @@ reviewRouter.route('/')
         console.log('Review Created ', review);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(review);
+        res.json({Review : review , review_id : review._id});
     }, (err) => next(err))
     .catch((err) => next(err));
 })

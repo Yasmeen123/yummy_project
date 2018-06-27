@@ -20,6 +20,10 @@ const UserSchema = new schema({
         type : String ,
         required : false 
     },
+    admin : {
+        type : Boolean ,
+        default : false
+    },
     review_count : {
         type : Number ,
         required : false

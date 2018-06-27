@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 OrderRouter.route('/')
-.options('*' ,(req,res) => {res.sendStatus(200)})
+//.options('*' ,(req,res) => {res.sendStatus(200)})
 .get(/*cors.cors , */(req,res,next) => {
         Orders.find({})
         .then((orders) => {

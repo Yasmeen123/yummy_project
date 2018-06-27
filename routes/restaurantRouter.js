@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 RestaurantRouter.route('/')
 //.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(/*cors.cors ,*/ (req,res,next) => {
+.get((req,res,next) => {
     if(req.query.business_id != null){
         Restaurants.aggregate([
             {
@@ -169,7 +169,7 @@ RestaurantRouter.route('/')
     }
 }) 
 
-.post(/*cors.corsWithOptions ,*/ authenticate.verifyUser , (req,res,next) =>{
+.post(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
      Restaurants.create(req.body)
      .then((restaurant) => {
          res.statusCode = 200;
@@ -177,6 +177,26 @@ RestaurantRouter.route('/')
          res.json(restaurant);
      }, (err) => next(err))
       .catch((err) => next(err))
+})
+
+.put(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
+    Restaurants.findOneAndUpdate({"business_id" : req.query.business_id} , req.body ,{new : true})
+    .then((restaurant) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(restaurant);
+    }, (err) => next(err))
+     .catch((err) => next(err))
+})
+
+.delete(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
+    Restaurants.deleteOne({"business_id" : req.query.business_id})
+    .then((restaurant) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json('Restaurant removed correctly');
+    },(err) => next(err))
+    .catch((err) => next(err))
 })
 
 module.exports = RestaurantRouter ;

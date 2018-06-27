@@ -8,7 +8,7 @@ const  ReviewSchema = new schema({
     },
     cool : {
         type : Number ,
-        required : true
+        required : false
     },
     date : {
         type : String ,
@@ -16,11 +16,11 @@ const  ReviewSchema = new schema({
     },
     funny : {
         type : String ,
-        required : true 
+        required : false 
     },
     review_id : {
         type : String ,
-        required : true ,
+        required : false ,
         unique : true
     },
     stars : {
@@ -33,15 +33,13 @@ const  ReviewSchema = new schema({
     },
     useful : {
         type : Number ,
-        required : true
+        required : false
     },
     user_id : {
         type : String ,
         required : true ,
         unique : true
-    },
-},{
-    timestamps : true
+    }
 }); 
 
 var Reviews = mongoose.model('Review',ReviewSchema);

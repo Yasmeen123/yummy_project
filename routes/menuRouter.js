@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 MenuRouter.route('/')
 //.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(/*cors.cors ,*/ (req,res,next) => {
+.get((req,res,next) => {
     if(req.query.business_id != null){
         Menus.find({'business_id' : req.query.business_id})
         .then((menu) => {
@@ -223,7 +223,7 @@ MenuRouter.route('/')
         .catch((err) => next(err));
     }
 })
-.post(/*cors.corsWithOptions , */ authenticate.verifyUser , (req,res,next) =>{
+.post(authenticate.verifyUser , (req,res,next) =>{
     Menus.create(req.body)
     .then((menu) => {
         res.statusCode = 200;
@@ -231,6 +231,26 @@ MenuRouter.route('/')
         res.json(menu);
     }, (err) => next(err))
      .catch((err) => next(err))
-});
+})
+
+.put(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
+    Menus.findOneAndUpdate({"business_id" : req.query.business_id} , req.body ,{new : true})
+    .then((menu) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(menu);
+    }, (err) => next(err))
+     .catch((err) => next(err))
+})
+
+.delete(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
+    Menus.deleteOne({"business_id" : req.query.business_id})
+    .then((restaurant) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json('This Dish removed correctly');
+    },(err) => next(err))
+    .catch((err) => next(err))
+})
 
 module.exports = MenuRouter ;
