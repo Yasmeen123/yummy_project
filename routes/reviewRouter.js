@@ -5,15 +5,13 @@ var url = require('url');
 var mongoose = require('mongoose');
 var Reviews = require('../models/review');
 var authenticate = require('../authenticate');
-//var cors = require('../routes/cors');
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 reviewRouter.route('/')
-//.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
-.get(/*cors.cors , */(req,res,next) => {
+.get((req,res,next) => {
     if(req.query.review_id != null){
         Reviews.find({ 'review_id' : req.query.review_id})
         .then((review) => {
@@ -33,7 +31,7 @@ reviewRouter.route('/')
     }
 })
 
-.post(/*cors.corsWithOptions , */ authenticate.verifyUser , (req,res,next) =>{
+.post(authenticate.verifyUser , (req,res,next) =>{
     Reviews.create(req.body)
     .then((review) => {
         console.log('Review Created ', review);
@@ -45,11 +43,11 @@ reviewRouter.route('/')
 })
 
 .delete(authenticate.verifyUser, (req,res,next) =>{
-    Reviews.deleteOne({"review_id" : req.query.review_id})
+    Reviews.findOneAndRemove({$and :[{"business_id" : req.body.business_id} , {"user_id" : req.body.user_id }]})
     .then((restaurant) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json('This Review removed correctly');
+        res.json(restaurant);
     },(err) => next(err))
     .catch((err) => next(err))
 })
