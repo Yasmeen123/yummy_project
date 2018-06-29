@@ -27,6 +27,7 @@ var userRouter = require('./routes/userRouter');
 var restaurantRouter = require('./routes/restaurantRouter');
 var menuRouter = require('./routes/menuRouter');
 var orderRouter = require('./routes/orderRouter');
+var favouriteRouter = require('./routes/favoutiteRouter');
 
 var app = express();
 
@@ -60,6 +61,7 @@ app.use('/photos', photoRouter);
 app.use('/menus', menuRouter);
 app.use('/restaurants', restaurantRouter);
 app.use('/orders',orderRouter);
+app.use('/favourite' ,favouriteRouter);
 
 
 // catch 404 and forward to error handler
