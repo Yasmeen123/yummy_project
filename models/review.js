@@ -37,7 +37,6 @@ const  ReviewSchema = new schema({
     user_id : {
         type : String ,
         required : true ,
-        unique : true
     }
 }); 
 
