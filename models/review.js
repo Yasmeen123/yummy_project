@@ -21,7 +21,6 @@ const  ReviewSchema = new schema({
     review_id : {
         type : String ,
         required : false ,
-        unique : true
     },
     stars : {
         type : Number ,
