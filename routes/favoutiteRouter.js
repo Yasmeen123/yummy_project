@@ -17,12 +17,21 @@ FavouriteRouter.route('/')
         Favourites.aggregate([
             {
                 $lookup: {
+                    from: "restaurants", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "restaurant"
+                }
+            },
+            {
+                $lookup: {
                     from: "photos", //add from it 
                     localField: "business_id",
                     foreignField: "business_id",
                     as: "photos"
                 }
             }
+
         ])
         .then((restaurant) => {
             res.statusCode = 200;

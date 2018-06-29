@@ -9,7 +9,7 @@ var favouriteSchema = new schema ({
        business_id : {
           type : String ,
           required : true ,
-       },
+       },/*
         name : {
            type : String ,
            required : true ,
@@ -59,7 +59,7 @@ var favouriteSchema = new schema ({
         hours : {
             type : String ,
             required : false
-        }
+        }*/
     
 });
 
