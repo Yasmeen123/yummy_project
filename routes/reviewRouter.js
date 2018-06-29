@@ -14,8 +14,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 reviewRouter.route('/')
 //.options(cors.corsWithOptions ,(req,res) => {res.sendStatus(200)})
 .get(/*cors.cors , */(req,res,next) => {
-    if(req.query.business_id != null){
-        Reviews.find({ business_id : req.query.business_id})
+    if(req.query.review_id != null){
+        Reviews.find({ 'review_id' : req.query.review_id})
         .then((review) => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
@@ -42,6 +42,16 @@ reviewRouter.route('/')
         res.json({Review : review , review_id : review._id});
     }, (err) => next(err))
     .catch((err) => next(err));
+})
+
+.delete(authenticate.verifyUser, (req,res,next) =>{
+    Reviews.deleteOne({"review_id" : req.query.review_id})
+    .then((restaurant) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json('This Review removed correctly');
+    },(err) => next(err))
+    .catch((err) => next(err))
 })
 
 
