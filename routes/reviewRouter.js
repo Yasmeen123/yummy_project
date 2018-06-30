@@ -43,7 +43,7 @@ reviewRouter.route('/')
 })
 
 .delete(authenticate.verifyUser, (req,res,next) =>{
-    Reviews.findOneAndRemove({$and :[{"business_id" : req.body.business_id} , {"user_id" : req.body.user_id }]})
+    Reviews.findOneAndRemove({$and :[{"_id" : req.body.review_id} , {"user_id" : req.body.user_id }]})
     .then((restaurant) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
