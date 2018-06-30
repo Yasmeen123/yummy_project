@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Restaurants = require('../models/restaurant');
 var Photos = require('../models/photo');
 var authenticate = require('../authenticate');
+var notifier = require('node-notifier');
 //var cors = require('../routes/cors');
 
 var app = express();
@@ -176,7 +177,11 @@ RestaurantRouter.route('/')
          res.setHeader('Content-Type', 'application/json');
          res.json(restaurant);
      }, (err) => next(err))
-      .catch((err) => next(err))
+      .catch((err) => next(err)) ,
+      notifier.notify({
+          title : "Yummy_App" ,
+          message : "There is A new restaurant is Added"
+      })
 })
 
 .put(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
@@ -185,8 +190,12 @@ RestaurantRouter.route('/')
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(restaurant);
-    }, (err) => next(err))
-     .catch((err) => next(err))
+    }, (err) => next(err)) 
+     .catch((err) => next(err)) ,
+     notifier.notify({
+        title : "Yummy_App" ,
+        message : "There is A restaurant is Updated"
+    })
 })
 
 .delete(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
@@ -194,9 +203,13 @@ RestaurantRouter.route('/')
     .then((restaurant) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json('Restaurant removed correctly');
+        res.json(restaurant);
     },(err) => next(err))
-    .catch((err) => next(err))
+    .catch((err) => next(err)) ,
+    notifier.notify({
+        title : "Yummy_App" ,
+        message : "There is A restaurant is Deleted"
+    })
 })
 
 module.exports = RestaurantRouter ;
