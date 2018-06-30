@@ -42,8 +42,18 @@ reviewRouter.route('/')
     .catch((err) => next(err));
 })
 
+.put(authenticate.verifyUser , (req,res,next) =>{
+    Reviews.findOneAndUpdate({"_id" : req.query.review_id , "user_id" : req.query.user_id} , req.body ,{new : true})
+    .then((review) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(review);
+    }, (err) => next(err)) 
+     .catch((err) => next(err)) 
+})
+
 .delete(authenticate.verifyUser, (req,res,next) =>{
-    Reviews.findOneAndRemove({$and :[{"_id" : req.body.review_id} , {"user_id" : req.body.user_id }]})
+    Reviews.findOneAndRemove({$and :[{"_id" : req.query.review_id} , {"user_id" : req.query.user_id }]})
     .then((restaurant) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

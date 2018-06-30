@@ -31,8 +31,8 @@ var favouriteRouter = require('./routes/favoutiteRouter');
 
 var app = express();
 
-const url = config.mongoUrl;
-//const url = 'mongodb://yasmeen:yasmeen123@ds261660.mlab.com:61660/yummy_project';
+//const url = config.mongoUrl;
+const url = 'mongodb://yasmeen:yasmeen123@ds261660.mlab.com:61660/yummy_project';
 const connect = mongoose.connect(url);
 connect.then((db) => {
    console.log('connected correctly to the server');
