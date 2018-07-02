@@ -177,11 +177,7 @@ RestaurantRouter.route('/')
          res.setHeader('Content-Type', 'application/json');
          res.json(restaurant);
      }, (err) => next(err))
-      .catch((err) => next(err)) ,
-      notifier.notify({
-          title : "Yummy_App" ,
-          message : "There is A new restaurant is Added"
-      })
+      .catch((err) => next(err)) 
 })
 
 .put(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
@@ -191,11 +187,7 @@ RestaurantRouter.route('/')
         res.setHeader('Content-Type', 'application/json');
         res.json(restaurant);
     }, (err) => next(err)) 
-     .catch((err) => next(err)) ,
-     notifier.notify({
-        title : "Yummy_App" ,
-        message : "There is A restaurant is Updated"
-    })
+     .catch((err) => next(err)) 
 })
 
 .delete(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
@@ -205,11 +197,7 @@ RestaurantRouter.route('/')
         res.setHeader('Content-Type', 'application/json');
         res.json(restaurant);
     },(err) => next(err))
-    .catch((err) => next(err)) ,
-    notifier.notify({
-        title : "Yummy_App" ,
-        message : "There is A restaurant is Deleted"
-    })
+    .catch((err) => next(err)) 
 })
 
 module.exports = RestaurantRouter ;

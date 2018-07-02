@@ -34,7 +34,6 @@ reviewRouter.route('/')
 .post(authenticate.verifyUser , (req,res,next) =>{
     Reviews.create(req.body)
     .then((review) => {
-        console.log('Review Created ', review);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json({Review : review , review_id : review._id});

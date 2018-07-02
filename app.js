@@ -8,6 +8,7 @@ var passport = require('passport');
 var authenticate = require('./authenticate');
 var config = require('./config');
 var cors = require('cors');
+var sockIO = require('socket.io')(); 
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 
@@ -31,8 +32,8 @@ var favouriteRouter = require('./routes/favoutiteRouter');
 
 var app = express();
 
-//const url = config.mongoUrl;
-const url = 'mongodb://yasmeen:yasmeen123@ds261660.mlab.com:61660/yummy_project';
+const url = config.mongoUrl;
+//const url = 'mongodb://yasmeen:yasmeen123@ds261660.mlab.com:61660/yummy_project';
 const connect = mongoose.connect(url);
 connect.then((db) => {
    console.log('connected correctly to the server');
@@ -63,6 +64,12 @@ app.use('/restaurants', restaurantRouter);
 app.use('/orders',orderRouter);
 app.use('/favourite' ,favouriteRouter);
 
+app.sockIO = sockIO ;
+sockIO.on('connection', function(socket){                
+  socket.on('create notification', function(data){   
+    socket.broadcast.emit('new notification',data);  
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
