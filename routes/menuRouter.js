@@ -132,87 +132,6 @@ MenuRouter.route('/')
         }, (err) => next(err))
         .catch((err) => next(err));
             }
-    }
-    else if (req.query.price && req.query.rating != null){
-        if (req.query.price  == 1){
-            Menus.aggregate([
-                {
-                    $lookup: {
-                        from: "restaurants", //add from it 
-                        localField: "business_id",
-                        foreignField: "business_id",
-                        as: "restaurant"
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "photos", //add from it 
-                        localField: "business_id",
-                        foreignField: "business_id",
-                        as: "photos"
-                    }
-                }
-            ])
-        .then((menus) => {
-            var filtered = menus.filter(menu => {return menu.price < 7}).filter(menu1 => {return menu1.rating == req.query.rating});
-            res.setHeader('Content-Type', 'application/json');
-            res.json(filtered);
-        }, (err) => next(err))
-        .catch((err) => next(err));
-        }else if (req.query.price  == 2){
-            Menus.aggregate([
-                {
-                    $lookup: {
-                        from: "restaurants", //add from it 
-                        localField: "business_id",
-                        foreignField: "business_id",
-                        as: "restaurant"
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "photos", //add from it 
-                        localField: "business_id",
-                        foreignField: "business_id",
-                        as: "photos"
-                    }
-                }
-            ])
-        .then((menus) => {
-            var filtered =menus.filter(menu => menu.price > 7 && menu.price < 14 );
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(filtered);
-        }, (err) => next(err))
-        .catch((err) => next(err));
-        }
-        else if (req.query.price  == 3){
-            Menus.aggregate([
-                {
-                    $lookup: {
-                        from: "restaurants", //add from it 
-                        localField: "business_id",
-                        foreignField: "business_id",
-                        as: "restaurant"
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "photos", //add from it 
-                        localField: "business_id",
-                        foreignField: "business_id",
-                        as: "photos"
-                    }
-                }
-            ])
-        .then((menus) => {
-            var filtered =menus.filter(menu => menu.price > 7 && menu.price < 14 );
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(filtered);
-        }, (err) => next(err))
-        .catch((err) => next(err));
-        }
     }else {
         Menus.find({})
         .then((menus) => {
@@ -223,7 +142,7 @@ MenuRouter.route('/')
         .catch((err) => next(err));
     }
 })
-.post(authenticate.verifyUser , (req,res,next) =>{
+.post(authenticate.verifyUser , authenticate.verifyAdmin , (req,res,next) =>{
     Menus.create(req.body)
     .then((menu) => {
         res.statusCode = 200;

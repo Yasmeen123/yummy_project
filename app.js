@@ -19,6 +19,7 @@ var Restaurants = require('./models/restaurant');
 var Reviews = require('./models/review');
 var Users = require('./models/user');
 var Orders = require('./models/order');
+var Recommendations = require('./models/recommendation');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -29,6 +30,7 @@ var restaurantRouter = require('./routes/restaurantRouter');
 var menuRouter = require('./routes/menuRouter');
 var orderRouter = require('./routes/orderRouter');
 var favouriteRouter = require('./routes/favoutiteRouter');
+var recommendationRouter = require('./routes/recommendationRouter');
 
 var app = express();
 
@@ -61,8 +63,9 @@ app.use('/reviews', reviewRouter);
 app.use('/photos', photoRouter);
 app.use('/menus', menuRouter);
 app.use('/restaurants', restaurantRouter);
-app.use('/orders',orderRouter);
-app.use('/favourite' ,favouriteRouter);
+app.use('/orders', orderRouter);
+app.use('/favourite' , favouriteRouter);
+app.use('/recommend',recommendationRouter);
 
 app.sockIO = sockIO ;
 sockIO.on('connection', function(socket){                

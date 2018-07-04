@@ -50,9 +50,6 @@ http://localhost:3000/favourite [post]
     "is_open": 1,
     "location" : [-81.6915189 , 41.49931041],
     "name": "Taco Bell Cantina",
-    "neighborhood": "Gateway District",
-    "postal_code": 44114,
-    "review_count": 17,
     "stars": 4
   }
 
@@ -62,4 +59,21 @@ http://localhost:3000/favourite?user_id=5b353cfeee34971bc0c030df [get]
 علشان يرجع كل المطاعم الي هو حاططها ف 
 favourite  
 وكمان المطاعم بترجع بالصور بتاعتها 
+
+http://localhost:3000/menus [post] 
+in body 
+  {
+    "dish_name": "Cracker Barrel Freshly Brewed Iced Tea **",
+    "restaurant_name": "Cracker Barrel Old Country Store",
+    "business_id": "JC-8I-jD2FUaFc3512dVcQ",
+    "price": 7,
+    "rating": 4
+  }
+
+http://localhost:3000/menus?business_id=CtYWpX_cy1YdZgoKtS0Tqg [put]
+in body edit
+
+http://localhost:3000/menus?business_id=CtYWpX_cy1YdZgoKtS0Tqg [delete]
+
+
 */
