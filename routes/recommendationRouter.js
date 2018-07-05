@@ -21,7 +21,15 @@ recommendationRouter.route('/')
                         foreignField: "business_id",
                         as: "restaurant"
                     }
-            }
+            },
+            {
+                $lookup: {
+                    from: "photos", //add from it 
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "photos"
+                }
+        }
         ])
         .then((recomnds) => {
             var filtered =recomnds.filter(recommend => recommend.user_id == req.query.user_id);
