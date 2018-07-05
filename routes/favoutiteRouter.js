@@ -53,11 +53,11 @@ FavouriteRouter.route('/')
 })
 
 .delete(authenticate.verifyUser, (req,res,next) =>{
-    Favourites.deleteOne({"business_id" : req.query.business_id})
+    Favourites.findOneAndRemove({"business_id" : req.query.business_id})
     .then((restaurant) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json('This Restaurant removed correctly');
+        res.json(restaurant);
     },(err) => next(err))
     .catch((err) => next(err))
 })
