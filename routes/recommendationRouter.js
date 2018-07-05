@@ -13,11 +13,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 recommendationRouter.route('/')
 .get((req,res,next) => {
     if(req.query.user_id != null){
-        Recommendations.find({'user_id' : req.query.user_id})
-        .then((recomm) => {
+        Recommendations.aggregate([
+            {
+                    $lookup: {
+                        from: "restaurants", //add from it 
+                        localField: "business_id",
+                        foreignField: "business_id",
+                        as: "restaurant"
+                    }
+            }
+        ])
+        .then((recomnds) => {
+            var filtered =recomnds.filter(recommend => recommend.user_id == req.query.user_id);
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json(recomm);
+            res.json(filtered);
         }, (err) => next(err))
         .catch((err) => next(err));
     }else{
